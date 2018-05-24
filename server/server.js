@@ -2,7 +2,7 @@ const mongoose = require('./db/mongoose');
 const express = require('express');
 const bodyParser = require('body-parser');
 
-require('./models/mongoose.connect');
+require('./db/mongoose.connect');
 
 const app = express();
 const PORT = process.env.PORT || 3000;

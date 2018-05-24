@@ -21,7 +21,6 @@ beforeEach((done) => {
 });
 
 //TEST POST ROUTE
-
 describe('POST To Dos', () => {
     it('should create a new to do', (done) => {
         let text = 'Test todo text';
