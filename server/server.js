@@ -1,17 +1,14 @@
-
 require('./config/config');
+require('./db/mongoose.connect');
+
+
 const mongoose = require('./db/mongoose');
 const express = require('express');
 const bodyParser = require('body-parser');
 const _ = require('lodash');
-
 const {ObjectID} = require('mongodb');
-
-require('./db/mongoose.connect');
-
 const app = express();
 const PORT = process.env.PORT;
-
 const ToDo = require('./models/ToDo.Schema');
 const User = require('./models/user');
 

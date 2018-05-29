@@ -1,3 +1,5 @@
+//Unused in this project, but connecting to mongoose can look like this!
+
 const mongoose = require('mongoose');
 // const ToDo = require('./models/ToDo.Schema');;
 
