@@ -1,6 +1,7 @@
 const mongoose = require('./db/mongoose');
 const express = require('express');
 const bodyParser = require('body-parser');
+const _ = require('lodash');
 
 const {ObjectID} = require('mongodb');
 
@@ -81,6 +82,34 @@ app.delete('/todos/:id', (req, res) => {
             console.log(error);
             res.sendStatus(500);
         });
+})
+
+app.patch('/todos/:id', (req, res) => {
+    const id = req.params.id;
+    //takes an object(1st param) and picks off keys if they exist(2nd param)
+    const body = _.pick(req.body, ['text', 'completed']);
+
+    if(!ObjectID.isValid(id)) {
+        return res.sendStatus(404);
+    }
+    //check if body.completed is a boolean and if it's true
+    if(_.isBoolean(body.completed) && body.completed) {
+        body.completedAt = new Date().getTime();
+    } else {
+        body.completed = false;
+        body.completedAt = null;
+    }
+
+    ToDo.findByIdAndUpdate(id, {$set: body}, {new: true})
+    .then((todo) => {
+        if(!todo) {
+            return res.sendStatus(404);
+        }
+        res.send({todo});
+    })
+    .catch((error) => {
+        res.sendStatus(400);
+    });
 })
 
 app.listen(PORT, () => {
