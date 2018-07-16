@@ -18,7 +18,6 @@ app.post('/todos', (req, res) => {
     let text = req.body
     
     var todo = new ToDo(text);
-    console.log(todo);
     
     todo.save(todo).then((response) => {
         res.send(response);
@@ -109,7 +108,23 @@ app.patch('/todos/:id', (req, res) => {
     .catch((error) => {
         res.sendStatus(400);
     });
-})
+});
+
+app.post('/users', (req, res) => {
+    const body = _.pick(req.body, ['email', 'password']);
+    let user = new User(body);
+
+    user.save()
+    .then(() => {
+        return user.generateAuthToken();
+    })
+    .then((token) => {
+        console.log(token);
+        res.header('x-auth', token).send(user);
+    })
+    .catch(err => res.send(err));
+
+});
 
 app.listen(PORT, () => {
     console.log(`app listening at ${PORT}`);
