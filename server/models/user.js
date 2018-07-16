@@ -34,10 +34,28 @@ let UserSchema = new Schema({
     }]
 });
 
+//sets instance method
 UserSchema.methods.toJSON = function() {
     let user = this;
     let userObject = user.toObject();
     return _.pick(userObject, ['_id', 'email']);
+}
+
+//sets model method
+UserSchema.statics.findByToken = function(token) {
+    let User = this;
+    let decoded;
+    try {
+        decoded = jwt.verify(token, 'saltstring');
+    }catch (e) {
+        return Promise.reject();
+    }
+
+    return User.findOne({
+        '_id': decoded._id,
+        'tokens.token': token,
+        'tokens.access': 'auth',
+    })
 }
 
 //instance method

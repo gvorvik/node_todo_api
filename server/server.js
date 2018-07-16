@@ -11,6 +11,7 @@ const app = express();
 const PORT = process.env.PORT;
 const ToDo = require('./models/ToDo.Schema');
 const User = require('./models/user');
+const {authenticate} = require('./middleware/authenticate');
 
 app.use(bodyParser.json());
 
@@ -108,6 +109,10 @@ app.patch('/todos/:id', (req, res) => {
     .catch((error) => {
         res.sendStatus(400);
     });
+});
+
+app.get('/users/me', authenticate, (req, res) => {
+    res.send(req.user);
 });
 
 app.post('/users', (req, res) => {
