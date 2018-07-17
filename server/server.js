@@ -144,6 +144,15 @@ app.post('/users', (req, res) => {
 
 });
 
+app.delete('/users/me/token', authenticate, (req, res) => {
+    req.user.removeToken(req.token)
+    .then(() => {
+        res.sendStatus(200);
+    }, () => {
+        res.sendStatus(400);
+    });
+})
+
 app.listen(PORT, () => {
     console.log(`app listening at ${PORT}`);
 })
